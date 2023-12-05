@@ -24,6 +24,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "nrf.h"
 
 /* USER CODE END Includes */
 
@@ -56,7 +57,16 @@ void SystemClock_Config(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+void RobotPower_On(void)//上电
+{
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_RESET);//电源上电
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);//LED熄灭
+}
+void RobotPower_Off(void)//掉电
+{
+	HAL_GPIO_WritePin(GPIOB, GPIO_PIN_0, GPIO_PIN_SET);//电源掉电
+	HAL_GPIO_WritePin(GPIOA, GPIO_PIN_6, GPIO_PIN_RESET);//LED点亮
+}
 /* USER CODE END 0 */
 
 /**
@@ -97,6 +107,17 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+	  
+	  if(powerShut_cnt > 0)
+	  {
+		  powerShut_cnt--;
+		  RobotPower_Off();
+	  }
+	  
+	  RobotPower_On();	  
+	  
+	  HAL_Delay(1);
+	  
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
